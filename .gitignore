@@ -1,5 +1,5 @@
-assets/*
+webroot/assets/*
 protected/runtime/*
-protected/data/*.db
+protected/data/*
 *.swp
 
