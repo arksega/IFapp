@@ -61,7 +61,7 @@ class UsersController extends Controller
 	 */
 	public function actionCreate()
 	{
-		$model=new Users;
+		$model=new Users('create');
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
@@ -69,8 +69,11 @@ class UsersController extends Controller
 		if(isset($_POST['Users']))
 		{
 			$model->attributes=$_POST['Users'];
-			if($model->save())
+			if($model->validate()) {
+				$model->generateHashes();
+				$model->save(false);
 				$this->redirect(array('view','id'=>$model->id));
+			}
 		}
 
 		$this->render('create',array(
@@ -92,11 +95,24 @@ class UsersController extends Controller
 
 		if(isset($_POST['Users']))
 		{
+			if ($_POST['Users']['password'] == '') {
+				$_POST['Users']['password'] = $model->password;
+				$_POST['Users']['password2'] = $model->password;
+				$newPassword = false;
+			}
+			else
+				$newPassword = true;
 			$model->attributes=$_POST['Users'];
-			if($model->save())
+			if($model->validate()) {
+				if ($newPassword)
+					$model->generateHashes();
+				$model->save(false);
 				$this->redirect(array('view','id'=>$model->id));
+			}
 		}
 
+		$model->password = '';
+		$model->password2 = '';
 		$this->render('update',array(
 			'model'=>$model,
 		));
@@ -127,10 +143,13 @@ class UsersController extends Controller
 	 */
 	public function actionIndex()
 	{
+        /*
 		$dataProvider=new CActiveDataProvider('Users');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
+        */
+        $this->actionAdmin();
 	}
 
 	/**

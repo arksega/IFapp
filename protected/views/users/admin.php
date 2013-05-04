@@ -9,6 +9,12 @@ $this->menu=array(
 	array('label'=>'Create Users','url'=>array('create')),
 );
 
+foreach(Yii::app()->user->getFlashes() as $key => $message) {
+
+	$html = '<div class="alert alert-' . $key . '">' . $message;
+	$html .= '<button type="button" class="close" data-dismiss="alert">×</button>' . "</div>\n";
+	echo $html;
+}
 Yii::app()->clientScript->registerScript('search', "
 $('.search-button').click(function(){
 	$('.search-form').toggle();
@@ -41,13 +47,20 @@ or <b>=</b>) at the beginning of each of your search values to specify how the c
 	'id'=>'users-grid',
 	'dataProvider'=>$model->search(),
 	'filter'=>$model,
+	'ajaxUpdate'=>false,
 	'columns'=>array(
-		'id',
+		//'id',
 		'name',
 		'nickname',
 		'email',
 		'mobile',
 		'phone',
+		array(
+			'name' => 'role',
+			'value' => 'Chtml::encode($data->roleText)',
+			'filter' => $model->roleOptions,
+			'htmlOptions'=>array('style'=>'width: 100px'),
+		),
 		/*
 		'password',
 		'salt',

@@ -24,9 +24,13 @@ $this->menu=array(
 		'email',
 		'mobile',
 		'phone',
-		'password',
-		'salt',
-		'status',
-		'role',
+		array(
+			'name' => 'status',
+			'value' => CHtml::encode($model->getStatusText())
+		),
+		array(
+			'name' => 'role',
+			'value' => CHtml::encode($model->getRoleText())
+		),
 	),
 )); ?>
