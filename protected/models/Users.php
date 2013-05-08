@@ -18,6 +18,12 @@
 class Users extends CActiveRecord
 {
 	public $password2;
+	const STATUS_INACTIVE = 0;
+	const STATUS_ACTIVE = 1;
+
+	const ROLE_ADMIN = 999;
+	const ROLE_GUEST = 0;
+	const ROLE_USER = 1;
 
 	/**
 	 * Returns the permission of delete the user.
@@ -25,8 +31,8 @@ class Users extends CActiveRecord
 	 */
 	protected function beforeDelete()
 	{
-		if ($this->role == 999) {
-			$admins = $this->findAll('role=:role', array(':role' => '999'));
+		if ($this->role == self::ROLE_ADMIN) {
+			$admins = $this->findAll('role=:role', array(':role' => self::ROLE_ADMIN));
 			if (count($admins) < 2) {
 				$mess = 'Usuario no eliminado: debe existir al menos un usuario administrador';
 				Yii::app()->user->setFlash('error', $mess);
@@ -177,17 +183,17 @@ class Users extends CActiveRecord
 	public function getRoleOptions()
 	{
 		return array(
-			0 => 'gest',
-			1 => 'user',
-			999 => 'admin',
+			self::ROLE_GUEST => 'guest',
+			self::ROLE_USER => 'user',
+			self::ROLE_ADMIN => 'admin',
 		);
 	}
 
 	public function getStatusOptions()
 	{
 		return array(
-			0 => 'inactive',
-			1 => 'active',
+			self::STATUS_INACTIVE => 'inactive',
+			self::STATUS_ACTIVE => 'active',
 		);
 	}
 
