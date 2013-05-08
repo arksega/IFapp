@@ -18,6 +18,9 @@ return array(
 		*/
 		// uncomment the following to use a MySQL database
 		'db'=> require(dirname(__FILE__) . '/db.php'),
+		'authManager'=>array(
+			'class'=>'CPhpAuthManager',
+		),
 		'log'=>array(
 			'class'=>'CLogRouter',
 			'routes'=>array(

@@ -20,4 +20,30 @@ class Controller extends CController
 	 * for more details on how to specify this property.
 	 */
 	public $breadcrumbs=array();
+	/**
+	 * The filter method for 'accessControl' filter.
+	 * This filter is a wrapper of {@link CAccessControlFilter}.
+	 * To use this filter, you must override {@link accessRules} method.
+	 * @param CFilterChain $filterChain the filter chain that the filter is on.
+	 */
+	public function filterAccessControl($filterChain)
+	{
+		$user = Yii::app()->user;
+		if (!$user->isGuest) {
+			$operation = $this->getAction()->id . substr(get_class($this), 0, -10);
+			$auth = Yii::app()->authManager;
+			if ($auth->getAuthItem($user->role))
+				$auth->assign($user->role, $user->id);
+			else
+				Yii::log('The "' . $user->role . '" role is not defined', 'warning', 'application');
+			if ($auth->CheckAccess($operation, $user->id))
+				$filterChain->run();
+			else
+				throw new CHttpException(403, 'You are not authorized to perform this action.');
+		} else {
+			$user->returnUrl = '/' . $this->getId() . '/' . $this->getAction()->id;
+			$this->redirect($user->loginUrl);
+		}
+	}
+
 }
