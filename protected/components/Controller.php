@@ -30,6 +30,10 @@ class Controller extends CController
 	{
 		$user = Yii::app()->user;
 		if (!$user->isGuest) {
+            if ($user->role == 'admin') {
+                $filterChain->run();
+                return true;
+            }
 			$operation = $this->getAction()->id . substr(get_class($this), 0, -10);
 			$auth = Yii::app()->authManager;
 			if ($auth->getAuthItem($user->role))
