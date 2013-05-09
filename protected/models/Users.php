@@ -25,6 +25,10 @@ class Users extends CActiveRecord
 	const ROLE_GUEST = 0;
 	const ROLE_USER = 1;
 
+	public function init()
+	{
+		$this->status = self::STATUS_ACTIVE;
+	}
 	/**
 	 * Returns the permission of delete the user.
 	 * @return Boolean indicate success if the user is not the last admin.
