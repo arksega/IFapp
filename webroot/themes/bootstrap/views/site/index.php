@@ -10,6 +10,11 @@ $this->pageTitle=Yii::app()->name;
 
 <?php $this->endWidget(); ?>
 
+<?php $this->widget('bootstrap.widgets.TbAlert', array(
+	'block'=>true,
+	'fade'=>true,
+)); ?>
+
 <?php
     if (Yii::app()->user->isGuest)
         echo $this->renderPartial('_loginParticipant', array('model'=>$model)); 

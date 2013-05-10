@@ -46,7 +46,8 @@ class Controller extends CController
 				throw new CHttpException(403, 'You are not authorized to perform this action.');
 		} else {
 			$user->returnUrl = '/' . $this->getId() . '/' . $this->getAction()->id;
-			$this->redirect($user->loginUrl);
+			Yii::app()->user->setFlash('error', '<strong>Error!</strong> Just logged users can have fun.');
+			$this->redirect('/site/index');
 		}
 	}
 
