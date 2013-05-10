@@ -23,7 +23,8 @@ class Users extends CActiveRecord
 
 	const ROLE_ADMIN = 999;
 	const ROLE_GUEST = 0;
-	const ROLE_USER = 1;
+	const ROLE_PARTICIPANT = 1;
+	const ROLE_STAFF = 2;
 
 	public function init()
 	{
@@ -72,7 +73,8 @@ class Users extends CActiveRecord
 		// NOTE: you should only define rules for those attributes that
 		// will receive user inputs.
 		return array(
-			array('name, nickname, email', 'required', 'except'=>'search'),
+			array('nickname', 'required', 'except'=>'search'),
+			array('name, email', 'required', 'except'=>'search participant'),
 			array('password, password2', 'required', 'on'=>'create'),
 			array('name', 'length', 'max'=>64),
 			array('nickname', 'length', 'max'=>16),
@@ -188,7 +190,8 @@ class Users extends CActiveRecord
 	{
 		return array(
 			self::ROLE_GUEST => 'guest',
-			self::ROLE_USER => 'user',
+			self::ROLE_PARTICIPANT => 'participant',
+			self::ROLE_STAFF=> 'staff',
 			self::ROLE_ADMIN => 'admin',
 		);
 	}

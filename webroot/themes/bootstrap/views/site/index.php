@@ -9,3 +9,8 @@ $this->pageTitle=Yii::app()->name;
 )); ?>
 
 <?php $this->endWidget(); ?>
+
+<?php
+    if (Yii::app()->user->isGuest)
+        echo $this->renderPartial('_loginParticipant', array('model'=>$model)); 
+?>

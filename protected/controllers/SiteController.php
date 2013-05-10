@@ -29,7 +29,16 @@ class SiteController extends Controller
 	{
 		// renders the view file 'protected/views/site/index.php'
 		// using the default layout 'protected/views/layouts/main.php'
-		$this->render('index');
+		$model = new LoginParticipantForm;
+		// collect user input data
+		if(isset($_POST['LoginParticipantForm']))
+		{
+			$model->attributes=$_POST['LoginParticipantForm'];
+			// validate user input and redirect to the previous page if valid
+			if($model->validate() && $model->login())
+				$this->redirect(Yii::app()->user->returnUrl);
+		}
+		$this->render('index',array('model'=>$model));
 	}
 
 	/**
