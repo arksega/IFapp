@@ -142,6 +142,46 @@ class UsersController extends Controller
 	}
 
 	/**
+	 * Manage the participants index
+	 */
+	public function actionParticipant()
+	{
+		$hash = new QuestionHash();
+		if (isset($_POST['QuestionHash'])) {
+			$hash->attributes= $_POST['QuestionHash'];
+			if($hash->validate()){
+				$question = Question::model()->find(
+					array(
+						'condition'=>'hash=:hash',
+						'params'=>array(':hash'=>$hash->hash)
+					)
+				);
+				if($question == null)
+					$hash->addError('hash', 'Question not exist!');
+				else {
+					$asign = new UserQuestions();
+					$asign->id_user = Yii::app()->user->id;
+					$asign->id_question = $question->id;
+					if ($question->type == Question::TYPE_FREE)
+						$asign->state = true;
+					$asign->save();
+					if ($asign->hasErrors())
+						$hash->addError('hash', 'You already have this question assigned!');
+				}
+			}
+		}
+		$model = $this->loadModel(Yii::app()->user->id);
+		$questionsAsigned = QuestionsAsigned::model()->findAll(
+					array(
+						'condition'=>'id_user=:id',
+						'params'=>array(':id'=>$model->id)
+					)
+		);
+		$dataProvider = new CArrayDataProvider($questionsAsigned);
+		$this->render('participant', array('questionModel'=>$hash, 'dataProvider'=>$dataProvider));
+	}
+
+	/**
 	 * Returns the data model based on the primary key given in the GET variable.
 	 * If the data model is not found, an HTTP exception will be raised.
 	 * @param integer the ID of the model to be loaded
