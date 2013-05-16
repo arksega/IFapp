@@ -26,6 +26,7 @@ class m130510_144512_create_question_tables extends CDbMigration
 				'answer'=>'int',
 				'value'=>'tinyint UNSIGNED NOT NULL',
 				'type'=>'tinyint UNSIGNED NOT NULL',
+				'hash'=>'varchar(5) NOT NULL',
 			),
 			'ENGINE=InnoDB DEFAULT CHARSET=utf8'
 		);
@@ -43,10 +44,11 @@ class m130510_144512_create_question_tables extends CDbMigration
 		$this->createTable(
 			'user_questions',
 			array(
+				'id'=>'pk',
 				'id_user'=>'int',
 				'id_question'=>'int',
 				'state'=>'bool',
-				'PRIMARY KEY (id_user, id_question)'
+				'UNIQUE (id_user, id_question)'
 			),
 			'ENGINE=InnoDB DEFAULT CHARSET=utf8'
 		);

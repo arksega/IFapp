@@ -9,6 +9,7 @@
  * @property integer $answer
  * @property integer $value
  * @property integer $type
+ * @property string  $hash
  *
  * The followings are the available model relations:
  * @property Answer[] $answers
@@ -80,6 +81,7 @@ class Question extends CActiveRecord
 			'answer' => 'Correct Answer',
 			'value' => 'Value',
 			'type' => 'Type',
+			'hash' => 'Identifier',
 		);
 	}
 
@@ -103,6 +105,16 @@ class Question extends CActiveRecord
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
 		));
+	}
+
+	/**
+	 * @return boolean the save state
+	 */
+	public function save()
+	{
+		if ($this->hash == '')
+			$this->hash = substr(sha1(mcrypt_create_iv(16, MCRYPT_DEV_URANDOM)), 0, 5);
+		return parent::save();
 	}
 
 	/**
