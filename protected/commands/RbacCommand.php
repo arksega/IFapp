@@ -37,6 +37,7 @@ class RbacCommand extends CConsoleCommand
 			 $this->_authManager->createOperation('viewUsers'); 
 			 $this->_authManager->createOperation('updateUsers'); 
 			 $this->_authManager->createOperation('deleteUsers'); 
+			 $this->_authManager->createOperation('participantUsers');
 
 			 //create the admin role and add the appropriate permissions
 			 $role=$this->_authManager->createRole("admin"); 
@@ -47,7 +48,11 @@ class RbacCommand extends CConsoleCommand
 			 $role->addChild("updateUsers"); 
 			 $role->addChild("deleteUsers"); 
 
-			 //create the user role and add the appropriate permissions
+			 //create the participant role and permissions
+			 $role=$this->_authManager->createRole("participant");
+			 $role->addChild('participantUsers');
+
+			 //create roles
 			 $role=$this->_authManager->createRole("user"); 
 
 			 $this->_authManager->save();
