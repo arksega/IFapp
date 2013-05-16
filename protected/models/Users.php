@@ -133,14 +133,14 @@ class Users extends CActiveRecord
 
 		$criteria=new CDbCriteria;
 
-		$criteria->compare('id',$this->id,true);
+		$criteria->compare('id',$this->id);
 		$criteria->compare('name',$this->name,true);
 		$criteria->compare('nickname',$this->nickname,true);
 		$criteria->compare('email',$this->email,true);
 		$criteria->compare('mobile',$this->mobile,true);
 		$criteria->compare('phone',$this->phone,true);
-		$criteria->compare('status',$this->status,true);
-		$criteria->compare('role',$this->role,true);
+		$criteria->compare('status',$this->status);
+		$criteria->compare('role',$this->role);
 
 		return new CActiveDataProvider($this, array(
 			'criteria'=>$criteria,
