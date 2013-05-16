@@ -51,6 +51,7 @@ class LoginParticipantForm extends CFormModel
 		}
 		$identity = new CUserIdentity($this->username, '');
 		$identity->setState('role', $currentUser->roleText);
+		$identity->setState('id', $currentUser->id);
 		Yii::app()->user->login($identity);
 		return true;
 	}
