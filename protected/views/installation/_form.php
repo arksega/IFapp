@@ -7,11 +7,11 @@
 
 	<?php echo $form->errorSummary($model); ?>
 
-	<?php echo $form->textFieldRow($model,'id_user',array('class'=>'span5')); ?>
+	<?php echo $form->textFieldRow($user,'username',array('class'=>'span5')); ?>
 
-	<?php echo $form->textFieldRow($model,'id_distro',array('class'=>'span5')); ?>
+	<?php echo $form->dropDownListRow($model,'id_distro', CHtml::listData($distros, 'id', 'name'), array('class'=>'span5')); ?>
 
-	<?php echo $form->textFieldRow($model,'architecture',array('class'=>'span5')); ?>
+	<?php echo $form->dropDownListRow($model,'architecture', $model->architectureOptions); ?>
 
 	<div class="form-actions">
 		<?php $this->widget('bootstrap.widgets.TbButton', array(

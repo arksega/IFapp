@@ -62,19 +62,27 @@ class InstallationController extends Controller
 	public function actionCreate()
 	{
 		$model=new Installation;
+		$user = new LoginParticipantForm;
+		$distros = Distro::model()->findAll();
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Installation']))
+		if(isset($_POST['Installation'], $_POST['LoginParticipantForm']))
 		{
+			$user->attributes=$_POST['LoginParticipantForm'];
+			$user->validate();
+			$user = $user->validInstance;
 			$model->attributes=$_POST['Installation'];
+			$model->id_user = $user->id;
 			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+				$this->redirect(array('admin'));
 		}
 
 		$this->render('create',array(
 			'model'=>$model,
+			'user'=>$user,
+			'distros'=>$distros
 		));
 	}
 
@@ -127,10 +135,13 @@ class InstallationController extends Controller
 	 */
 	public function actionIndex()
 	{
+		/*
 		$dataProvider=new CActiveDataProvider('Installation');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
+		*/
+		$this->actionAdmin();
 	}
 
 	/**

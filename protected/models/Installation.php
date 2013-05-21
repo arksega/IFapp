@@ -15,6 +15,9 @@
  */
 class Installation extends CActiveRecord
 {
+	const ARCHITECTURE_X86_64 = 0;
+	const ARCHITECTURE_I586 = 1;
+
 	/**
 	 * Returns the static model of the specified AR class.
 	 * @param string $className active record class name.
@@ -69,8 +72,8 @@ class Installation extends CActiveRecord
 	{
 		return array(
 			'id' => 'ID',
-			'id_user' => 'Id User',
-			'id_distro' => 'Id Distro',
+			'id_user' => 'User',
+			'id_distro' => 'Distro',
 			'architecture' => 'Architecture',
 		);
 	}
@@ -95,4 +98,19 @@ class Installation extends CActiveRecord
 			'criteria'=>$criteria,
 		));
 	}
+
+	public function getArchitectureOptions()
+	{
+		return array(
+			self::ARCHITECTURE_X86_64 =>'64bit',
+			self::ARCHITECTURE_I586 => '32bit',
+		);
+	}
+
+	public function getArchitectureText()
+	{
+		$op = $this->getArchitectureOptions();
+		return isset($op[$this->architecture]) ? $op[$this->architecture] : null;
+	}
+
 }

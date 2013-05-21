@@ -32,6 +32,16 @@ class LoginParticipantForm extends CFormModel
 	 */
 	public function login()
 	{
+		$currentUser = $this->getValidInstance();
+		$identity = new CUserIdentity($this->username, '');
+		$identity->setState('role', $currentUser->roleText);
+		$identity->setState('id', $currentUser->id);
+		Yii::app()->user->login($identity);
+		return true;
+	}
+
+	public function getValidInstance()
+	{
 		$users = new Users();
 		$currentUser = $users->find(
 			'nickname=:nickname',
@@ -47,12 +57,7 @@ class LoginParticipantForm extends CFormModel
 				var_dump($currentUser->getErrors());
 				exit(0);
 			}
-
 		}
-		$identity = new CUserIdentity($this->username, '');
-		$identity->setState('role', $currentUser->roleText);
-		$identity->setState('id', $currentUser->id);
-		Yii::app()->user->login($identity);
-		return true;
+		return $currentUser;
 	}
 }
