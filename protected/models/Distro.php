@@ -43,7 +43,7 @@ class Distro extends CActiveRecord
 			array('name', 'required'),
 			array('name', 'length', 'max'=>20),
 			array('img', 'length', 'max'=>50),
-			array('img', 'file', 'types'=>'jpg, gif, png'),
+			array('img', 'file', 'types'=>'jpg, gif, png', 'allowEmpty'=>true),
 			// The following rule is used by search().
 			// Please remove those attributes that should not be searched.
 			array('id, name, img', 'safe', 'on'=>'search'),
@@ -71,7 +71,7 @@ class Distro extends CActiveRecord
 		return array(
 			'id' => 'ID',
 			'name' => 'Name',
-			'img' => 'Img',
+			'img' => 'Logo',
 		);
 	}
 

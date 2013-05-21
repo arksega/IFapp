@@ -5,7 +5,6 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List Distro','url'=>array('index')),
 	array('label'=>'Manage Distro','url'=>array('admin')),
 );
 ?>

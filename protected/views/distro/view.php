@@ -5,7 +5,6 @@ $this->breadcrumbs=array(
 );
 
 $this->menu=array(
-	array('label'=>'List Distro','url'=>array('index')),
 	array('label'=>'Create Distro','url'=>array('create')),
 	array('label'=>'Update Distro','url'=>array('update','id'=>$model->id)),
 	array('label'=>'Delete Distro','url'=>'#','linkOptions'=>array('submit'=>array('delete','id'=>$model->id),'confirm'=>'Are you sure you want to delete this item?')),
@@ -18,8 +17,15 @@ $this->menu=array(
 <?php $this->widget('bootstrap.widgets.TbDetailView',array(
 	'data'=>$model,
 	'attributes'=>array(
-		'id',
 		'name',
-		'img',
+		array(
+			'name'=>'Logo',
+			'value'=>CHtml::image(
+				Yii::app()->request->baseUrl . '/distro_logos/' . $model->img,
+				"Logo",
+				array("class"=>"img-rounded", "style"=>"width: 100px; height: 100px")
+			),
+			'type'=>'html',
+		)
 	),
 )); ?>

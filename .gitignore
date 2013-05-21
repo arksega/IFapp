@@ -2,4 +2,5 @@ webroot/assets/*
 protected/runtime/*
 protected/data/*
 *.swp
+webroot/distro_logos/*
 

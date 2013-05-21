@@ -69,8 +69,12 @@ class DistroController extends Controller
 		if(isset($_POST['Distro']))
 		{
 			$model->attributes=$_POST['Distro'];
-			if($model->save())
+			$uploadedFile = CUploadedFile::getInstance($model, 'img');
+			$model->img = $uploadedFile->name;
+			if($model->save()) {
+				$uploadedFile->saveAs(Yii::app()->basePath . '/../webroot/distro_logos/' . $model->img);
 				$this->redirect(array('view','id'=>$model->id));
+			}
 		}
 
 		$this->render('create',array(
@@ -92,9 +96,15 @@ class DistroController extends Controller
 
 		if(isset($_POST['Distro']))
 		{
-			$model->attributes=$_POST['Distro'];
-			if($model->save())
+			$uploadedFile = CUploadedFile::getInstance($model, 'img');
+			if ($uploadedFile) {
+				$model->img = $uploadedFile->name;
+				$uploadedFile->saveAs(Yii::app()->basePath . '/../webroot/distro_logos/' . $model->img);
+			}
+			$model->name=$_POST['Distro']['name'];
+			if($model->save()) {
 				$this->redirect(array('view','id'=>$model->id));
+			}
 		}
 
 		$this->render('update',array(
@@ -127,10 +137,13 @@ class DistroController extends Controller
 	 */
 	public function actionIndex()
 	{
+		/*
 		$dataProvider=new CActiveDataProvider('Distro');
 		$this->render('index',array(
 			'dataProvider'=>$dataProvider,
 		));
+		*/
+		$this->actionAdmin();
 	}
 
 	/**
