@@ -71,12 +71,13 @@ class InstallationController extends Controller
 		if(isset($_POST['Installation'], $_POST['LoginParticipantForm']))
 		{
 			$user->attributes=$_POST['LoginParticipantForm'];
-			$user->validate();
-			$user = $user->validInstance;
-			$model->attributes=$_POST['Installation'];
-			$model->id_user = $user->id;
-			if($model->save())
-				$this->redirect(array('admin'));
+			if ($user->validate()) {
+				$user = $user->validInstance;
+				$model->attributes=$_POST['Installation'];
+				$model->id_user = $user->id;
+				if($model->save())
+					$this->redirect(array('admin'));
+			}
 		}
 
 		$this->render('create',array(
@@ -94,19 +95,30 @@ class InstallationController extends Controller
 	public function actionUpdate($id)
 	{
 		$model=$this->loadModel($id);
+		$realUser = Users::model()->findByPk($model->id_user);
+		$user = new LoginParticipantForm();
+		$user->nickname = $realUser->nickname;
+		$distros = Distro::model()->findAll();
 
 		// Uncomment the following line if AJAX validation is needed
 		// $this->performAjaxValidation($model);
 
-		if(isset($_POST['Installation']))
+		if(isset($_POST['Installation'], $_POST['LoginParticipantForm']))
 		{
-			$model->attributes=$_POST['Installation'];
-			if($model->save())
-				$this->redirect(array('view','id'=>$model->id));
+			$user->attributes=$_POST['LoginParticipantForm'];
+			if ($user->validate()) {
+				$user = $user->validInstance;
+				$model->attributes=$_POST['Installation'];
+				$model->id_user = $user->id;
+				if($model->save())
+					$this->redirect(array('admin'));
+			}
 		}
 
 		$this->render('update',array(
 			'model'=>$model,
+			'user'=>$user,
+			'distros'=>$distros
 		));
 	}
 
@@ -154,8 +166,14 @@ class InstallationController extends Controller
 		if(isset($_GET['Installation']))
 			$model->attributes=$_GET['Installation'];
 
+		$installation = Yii::app()->db->createCommand()
+			->select('*')
+			->from('installation_view')
+			->queryAll();
+		$dataProvider = new CArrayDataProvider($installation);
 		$this->render('admin',array(
 			'model'=>$model,
+			'dataProvider'=>$dataProvider,
 		));
 	}
 

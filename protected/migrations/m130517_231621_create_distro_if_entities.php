@@ -74,10 +74,19 @@ class m130517_231621_create_distro_if_entities extends CDbMigration
 			'id'
 		);
 
+		$this->execute(
+			'create view installation_view as
+				select installation.id, id_user, id_distro,
+					architecture, distro.name, nickname from installation
+				left join distro on id_distro=distro.id
+				left join users on id_user=users.id;'
+		);
+
 	}
 
 	public function down()
 	{
+		$this->execute('drop view installation_view');
 		$this->dropForeignKey('installation_fk1', 'installation');
 		$this->dropForeignKey('installation_fk2', 'installation');
 		$this->dropForeignKey('available_distros_fk1', 'available_distros');

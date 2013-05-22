@@ -14,17 +14,34 @@ $this->menu=array(
 <?php 
 	$this->widget('bootstrap.widgets.TbGridView',array(
 	'id'=>'installation-grid',
-	'dataProvider'=>$model->search(),
+	'dataProvider'=>$dataProvider,
 	'columns'=>array(
-		'id_user',
 		array(
-			'header'=>'Distro',
-			'name'=>'id_distro',
-			'value'=>'$data->idDistro->name',
+			'name'=>'Nickname',
+			'value'=>'$data["nickname"]',
 		),
-		'architecture',
+		array(
+			'name'=>'Distro',
+			'value'=>'$data["name"]',
+		),
+		array(
+			'name'=>'Architecture',
+			'value'=>'Installation::getArchitectureOptions()[$data["architecture"]]',
+		),
 		array(
 			'class'=>'bootstrap.widgets.TbButtonColumn',
+			'template'=>'{view}{update}{delete}',
+			'buttons'=>array(
+				'view' => array(
+					'url'=>'Yii::app()->controller->createUrl("installation/view", array("id"=>$data["id"]))',
+				),
+				'update' => array(
+					'url'=>'Yii::app()->controller->createUrl("installation/update", array("id"=>$data["id"]))',
+				),
+				'delete' => array(
+					'url'=>'Yii::app()->controller->createUrl("installation/delete", array("id"=>$data["id"], "command"=>"delete"))',
+				),
+			),
 		),
 	),
 )); ?>

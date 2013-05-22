@@ -15,4 +15,4 @@ $this->menu=array(
 
 <h1>Update Installation <?php echo $model->id; ?></h1>
 
-<?php echo $this->renderPartial('_form',array('model'=>$model)); ?>
+<?php echo $this->renderPartial('_form',array('model'=>$model, 'user'=>$user, 'distros'=>$distros)); ?>

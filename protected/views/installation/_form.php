@@ -7,7 +7,7 @@
 
 	<?php echo $form->errorSummary($model); ?>
 
-	<?php echo $form->textFieldRow($user,'username',array('class'=>'span5')); ?>
+	<?php echo $form->textFieldRow($user,'nickname',array('class'=>'span5', 'maxlength'=>9)); ?>
 
 	<?php echo $form->dropDownListRow($model,'id_distro', CHtml::listData($distros, 'id', 'name'), array('class'=>'span5')); ?>
 
