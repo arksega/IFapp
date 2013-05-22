@@ -4,7 +4,7 @@
 	'enableAjaxValidation'=>false,
 )); ?>
 
-	<?php echo $form->textFieldRow($model,'username',array('class'=>'span5','maxlength'=>64)); ?>
+	<?php echo $form->textFieldRow($model,'nickname',array('class'=>'span5','maxlength'=>10)); ?>
 
 	<br/>
 	<?php $this->widget('bootstrap.widgets.TbButton', array(

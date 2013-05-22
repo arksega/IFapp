@@ -7,33 +7,33 @@
  */
 class LoginParticipantForm extends CFormModel
 {
-	public $username;
+	public $nickname;
 
 	private $_identity;
 
 	/**
 	 * Declares the validation rules.
-	 * The rules state that username and password are required,
+	 * The rules state that nickname and password are required,
 	 * and password needs to be authenticated.
 	 */
 	public function rules()
 	{
 		return array(
-			// username and password are required
-			array('username', 'required'),
-			array('username', 'numerical'),
-			array('username', 'length', 'is'=>9),
+			// nickname and password are required
+			array('nickname', 'required'),
+			array('nickname', 'numerical'),
+			array('nickname', 'length', 'is'=>9),
 		);
 	}
 
 	/**
-	 * Logs in the user using the given username and password in the model.
+	 * Logs in the user using the given nickname and password in the model.
 	 * @return boolean whether login is successful
 	 */
 	public function login()
 	{
 		$currentUser = $this->getValidInstance();
-		$identity = new CUserIdentity($this->username, '');
+		$identity = new CUserIdentity($this->nickname, '');
 		$identity->setState('role', $currentUser->roleText);
 		$identity->setState('id', $currentUser->id);
 		Yii::app()->user->login($identity);
@@ -45,13 +45,13 @@ class LoginParticipantForm extends CFormModel
 		$users = new Users();
 		$currentUser = $users->find(
 			'nickname=:nickname',
-			array(':nickname'=>$this->username)
+			array(':nickname'=>$this->nickname)
 		);
 
 		if($currentUser===null)
 		{
 			$currentUser = new Users('participant');
-			$currentUser->nickname = $this->username;
+			$currentUser->nickname = $this->nickname;
 			$currentUser->role = Users::ROLE_PARTICIPANT;
 			if(!$currentUser->save()){
 				var_dump($currentUser->getErrors());
